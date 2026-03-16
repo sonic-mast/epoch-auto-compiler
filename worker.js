@@ -29,6 +29,7 @@ async function compileLatestEpoch(env) {
   try {
     // 1. Get current epoch ID
     const statusRes = await fetch(`${API_BASE}/`);
+    if (!statusRes.ok) throw new Error(`Status fetch failed: ${statusRes.status}`);
     const status = await statusRes.json();
     const currentEpoch = status.epoch;
     log.push(`Current epoch: ${currentEpoch}`);
@@ -38,6 +39,7 @@ async function compileLatestEpoch(env) {
     if (closingId < 1) return { ok: false, error: 'No epoch to compile yet', log };
 
     const epochRes = await fetch(`${API_BASE}/epoch/${closingId}`);
+    if (!epochRes.ok) throw new Error(`Epoch fetch failed: ${epochRes.status}`);
     const epochData = await epochRes.json();
     const { epoch, signals = [] } = epochData;
 
